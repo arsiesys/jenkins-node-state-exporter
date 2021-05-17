@@ -1,0 +1,31 @@
+dist: bionic
+
+language: go
+go:
+  - 1.15.x
+env:
+  global:
+    - GO111MODULE=on
+# Only clone the most recent commit.
+git:
+  depth: 1
+
+# Skip the install step. Don't `go get` dependencies. Only build with the code
+# in vendor/
+install: true
+
+script:
+  - go mod vendor
+  - export GIT_VERSION=$(git describe --tags --long --always)
+  - GOOS=linux GOARCH=amd64 go build -mod vendor -ldflags "-X main.version=${GIT_VERSION}" -o build/jenkins-node-state-exporter.linux-amd64 .
+  - sha256sum build/jenkins-node-state-exporter.linux-amd64 > build/jenkins-node-state-exporter.linux-amd64.sha256sum
+
+deploy:
+  provider: releases
+  api_key:
+    secure: "d2sH3eIGSf6em0L6lPZn7A606UdRnVSJT2lqELpHLAJPr84kYhOgBKlFb7GSfbmAnxOH0wlwpUH9kjnSompz1rrVZIv7EJUpfsy8wGaE5h9SyOVZFu0ylBSSaXk4RJ2fsN4QlwIOG6tuKP+OzHUD86SP1G03mBDqXYFY1duqlXWuWWeheNnOwztxV8WaPQYC5m+NhRFEFNm/C/9VaUaQlDfCxY/8eFEKkFFUAfMLl/+hvMuzYgIO5MD0hvFt8G5oOgkWbEBIiwoQ7uifnWiias2w2XcY6ODWHdbwBO8Mg8tlVDSYCrqxW9/D42tiudi9ODrbNqWTfKzTDEPW2ta4qM065GCzNoHOIJA9ktfpu+nVP4kTGqVs6PkbUbqk0TH280YzAQDJLlEZP6Drtg+Z831BGph4XKQoKMPLo9H9NQ0grZhD5dvAql+d3bVJ2NwomqhY8KT60H1TCKf8QcfZbj/Z3FKastlRVdn/K0FZ03MPv+HJsvGV1spA3v2mMpENDlGIZabOFpn497rDCBDb8dpbb6vaJASt/CQRMYUWuKMZtRf5Q8//zGRjzzXnnrbvomypXNgBpuB0lAulnJ6hiyBybPpjc6CLr9wPrRAfrpBaX6vPm7h38cFd+lMdNHnzmRKEzBpM2RWwo/S99/tuuP1C3NZJyxCJ3zJuD6GVoRQ="
+  file_glob: true
+  file: build/*
+  skip_cleanup: true
+  on:
+    tags: true
