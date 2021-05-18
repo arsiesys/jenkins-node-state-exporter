@@ -54,7 +54,7 @@ func init() {
 	if err := viper.BindPFlag("address", rootCmd.Flags().Lookup("address")); err != nil {
 		log.Fatal(err)
 	}
-	rootCmd.Flags().Int("port", 9723,"port to listen on")
+	rootCmd.Flags().Int("port", 9827,"port to listen on")
 	if err := viper.BindPFlag("port", rootCmd.Flags().Lookup("port")); err != nil {
 		log.Fatal(err)
 	}
