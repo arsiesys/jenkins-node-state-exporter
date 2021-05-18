@@ -17,3 +17,17 @@ jenkins_node_exporter_failure 0
 jenkins_node_maintenance_status{computerName="master"} 0
 jenkins_node_maintenance_status{computerName="node1"} 2
 ```
+
+Available options:
+```
+Usage:
+  jenkins-node-state-exporter [flags]
+
+Flags:
+  -a, --address string           address of the jenkins server (default "http://localhost/jenkins")
+      --disable-authentication   disable authentication
+  -h, --help                     help for jenkins-node-state-exporter
+  -p, --password string          password of the jenkins user account (default "admin")
+      --port int                 port to listen on (default 9723)
+  -u, --username string          username of the jenkins user account (default "admin")
+```
