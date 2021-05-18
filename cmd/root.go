@@ -17,13 +17,13 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/spf13/cobra"
-	"log"
-	"os"
-
 	exporter "github.com/arsiesys/jenkins-node-state-exporter/pkg/exporter"
 	homedir "github.com/mitchellh/go-homedir"
+	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"log"
+	"os"
+	"time"
 )
 
 var cfgFile string
@@ -56,6 +56,10 @@ func init() {
 	}
 	rootCmd.Flags().Int("port", 9827,"port to listen on")
 	if err := viper.BindPFlag("port", rootCmd.Flags().Lookup("port")); err != nil {
+		log.Fatal(err)
+	}
+	rootCmd.Flags().Duration("fetch-interval",30*time.Second,"fetch-interval in seconds")
+	if err := viper.BindPFlag("fetch-interval", rootCmd.Flags().Lookup("fetch-interval")); err != nil {
 		log.Fatal(err)
 	}
 	rootCmd.Flags().Bool("disable-authentication",false,"disable authentication")
@@ -102,5 +106,6 @@ func initConfig() {
 	} else {
 		log.Printf("Using username: %s", viper.GetString("username"))
 	}
-	log.Printf("Listening on port :%d",viper.GetInt("port"))
+	log.Printf("Listening on port: %d",viper.GetInt("port"))
+	log.Printf("Parsing interval: %fs",viper.GetDuration("fetch-interval").Seconds())
 }

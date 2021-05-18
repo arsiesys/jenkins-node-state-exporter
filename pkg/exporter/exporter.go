@@ -118,8 +118,7 @@ func promWatchJenkinsNodes(registry prometheus.Registry) {
 				delete(listOfKnownComputer, k)
 			}
 
-
-			time.Sleep(10 * time.Second)
+			time.Sleep(time.Duration(viper.GetDuration("fetch-interval")))
 		}
 	}()
 }

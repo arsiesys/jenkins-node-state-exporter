@@ -24,10 +24,11 @@ Usage:
   jenkins-node-state-exporter [flags]
 
 Flags:
-  -a, --address string           address of the jenkins server (default "http://localhost/jenkins")
-      --disable-authentication   disable authentication
-  -h, --help                     help for jenkins-node-state-exporter
-  -p, --password string          password of the jenkins user account (default "admin")
-      --port int                 port to listen on (default 9723)
-  -u, --username string          username of the jenkins user account (default "admin")
+  -a, --address string            address of the jenkins server (default "http://localhost/jenkins")
+      --disable-authentication    disable authentication
+      --fetch-interval duration   fetch-interval in seconds (default 30s)
+  -h, --help                      help for jenkins-node-state-exporter
+  -p, --password string           password of the jenkins user account (default "admin")
+      --port int                  port to listen on (default 9827)
+  -u, --username string           username of the jenkins user account (default "admin")
 ```
