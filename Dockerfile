@@ -3,7 +3,7 @@
 ############################
 FROM golang as builder
 
-WORKDIR $GOPATH/srv/aresiesys/jenkins-node-state-exporter/
+WORKDIR $GOPATH/srv/arsiesys/jenkins-node-state-exporter/
 COPY . .
 
 RUN go mod vendor
@@ -18,5 +18,6 @@ ENV GIN_MODE=release
 WORKDIR /app/
 # Import from builder.
 COPY --from=builder /go/bin/jenkins-node-state-exporter /app/jenkins-node-state-exporter
+COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 ENTRYPOINT ["/app/jenkins-node-state-exporter"]
-EXPOSE 9723
+EXPOSE 9827
