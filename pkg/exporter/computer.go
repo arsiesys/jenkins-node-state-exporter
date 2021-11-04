@@ -15,8 +15,17 @@ limitations under the License.
 */
 package exporter
 
+import (
+	"github.com/spf13/viper"
+	"strings"
+)
+
 type computerList struct {
 	Computers []computer `json:"computer"`
+}
+
+type label  struct {
+	Name string `json:"name"`
 }
 
 type computer struct {
@@ -25,11 +34,29 @@ type computer struct {
 	Offline bool `json:"offline"`
 	OfflineCauseReason string `json:"offlineCauseReason"`
 	TemporarilyOffline bool `json:"temporarilyOffline"`
+	AssignedLabels []label `json:"assignedLabels"`
+}
+
+func (c *computer) GetCustomTagFromAssignedLabels() string {
+	// If no role is assigned, defaulting to "worker"
+	prefix := viper.GetString("labelrole")
+	role := "worker"
+	for _, label := range c.AssignedLabels {
+		labelName := label.Name
+		if strings.HasPrefix(labelName,prefix) {
+			extractedRole := labelName[len(prefix):]
+			if len(extractedRole) > 0 {
+				role = extractedRole
+			}
+		}
+	}
+	return role
 }
 
 func (c *computer) GetLabelValues() []string  {
 	return []string{
 		c.DisplayName,
+		c.GetCustomTagFromAssignedLabels(),
 	}
 }
 

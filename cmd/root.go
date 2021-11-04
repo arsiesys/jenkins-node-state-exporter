@@ -74,6 +74,10 @@ func init() {
 	if err := viper.BindPFlag("password", rootCmd.Flags().Lookup("password")); err != nil {
 		log.Fatal(err)
 	}
+	rootCmd.Flags().StringP("labelrole","r","role=","prefix of the label to parse a role associated with the node")
+	if err := viper.BindPFlag("labelrole", rootCmd.Flags().Lookup("labelrole")); err != nil {
+		log.Fatal(err)
+	}
 }
 
 // initConfig reads in config file and ENV variables if set.

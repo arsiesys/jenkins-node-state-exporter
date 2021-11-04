@@ -30,6 +30,7 @@ import (
 
 var labelNames = []string {
 	"computerName",
+	"role",
 }
 
 
