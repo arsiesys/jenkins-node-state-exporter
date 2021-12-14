@@ -24,17 +24,17 @@ type computerList struct {
 	Computers []computer `json:"computer"`
 }
 
-type label  struct {
+type label struct {
 	Name string `json:"name"`
 }
 
 type computer struct {
-	DisplayName string `json:"displayName"`
-	Idle bool `json:"idle"`
-	Offline bool `json:"offline"`
-	OfflineCauseReason string `json:"offlineCauseReason"`
-	TemporarilyOffline bool `json:"temporarilyOffline"`
-	AssignedLabels []label `json:"assignedLabels"`
+	DisplayName        string  `json:"displayName"`
+	Idle               bool    `json:"idle"`
+	Offline            bool    `json:"offline"`
+	OfflineCauseReason string  `json:"offlineCauseReason"`
+	TemporarilyOffline bool    `json:"temporarilyOffline"`
+	AssignedLabels     []label `json:"assignedLabels"`
 }
 
 func (c *computer) GetCustomTagFromAssignedLabels() string {
@@ -43,7 +43,7 @@ func (c *computer) GetCustomTagFromAssignedLabels() string {
 	role := "worker"
 	for _, label := range c.AssignedLabels {
 		labelName := label.Name
-		if strings.HasPrefix(labelName,prefix) {
+		if strings.HasPrefix(labelName, prefix) {
 			extractedRole := labelName[len(prefix):]
 			if len(extractedRole) > 0 {
 				role = extractedRole
@@ -53,11 +53,15 @@ func (c *computer) GetCustomTagFromAssignedLabels() string {
 	return role
 }
 
-func (c *computer) GetLabelValues() []string  {
+func (c *computer) GetLabelValues() []string {
 	return []string{
 		c.DisplayName,
 		c.GetCustomTagFromAssignedLabels(),
 	}
+}
+
+func (c *computer) GetLabelValuesString() string {
+	return strings.Join(c.GetLabelValues(), "_")
 }
 
 func (c *computer) GetBusyStatus() float64 {

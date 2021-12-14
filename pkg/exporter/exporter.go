@@ -28,11 +28,10 @@ import (
 	"time"
 )
 
-var labelNames = []string {
+var labelNames = []string{
 	"computerName",
 	"role",
 }
-
 
 func getData() string {
 	client := &http.Client{}
@@ -45,7 +44,7 @@ func getData() string {
 		return "unknown"
 	}
 	if !viper.GetBool("disable-authentication") {
-		req.SetBasicAuth(login,token)
+		req.SetBasicAuth(login, token)
 	}
 
 	resp, err := client.Do(req)
@@ -84,7 +83,7 @@ func promWatchJenkinsNodes(registry prometheus.Registry) {
 	registry.MustRegister(busyState)
 	registry.MustRegister(failGetData)
 
-	var listOfKnownComputer = make(map[string]bool)
+	listOfKnownComputer := map[string]computer{}
 
 	go func() {
 		for {
@@ -97,26 +96,25 @@ func promWatchJenkinsNodes(registry prometheus.Registry) {
 				continue
 			}
 			for _, computer := range computerList.Computers {
-				_, found := listOfKnownComputer[computer.DisplayName]
+				_, found := listOfKnownComputer[computer.GetLabelValuesString()]
 				if !found {
-					listOfKnownComputer[computer.DisplayName] = true
+					listOfKnownComputer[computer.GetLabelValuesString()] = computer
 				}
 
 				maintenanceState.WithLabelValues(computer.GetLabelValues()...).Set(computer.GetMaintenanceStatus())
 				busyState.WithLabelValues(computer.GetLabelValues()...).Set(computer.GetBusyStatus())
 			}
-			L:
-			for k,_ := range listOfKnownComputer {
-
+		L:
+			for kname, k := range listOfKnownComputer {
 				for _, computer := range computerList.Computers {
-					if computer.DisplayName == k  {
+					if computer.GetLabelValuesString() == kname {
 						continue L
 					}
 				}
-				log.Printf("computer %v was removed from master, removing metric..", k)
-				maintenanceState.DeleteLabelValues(k)
-				busyState.DeleteLabelValues(k)
-				delete(listOfKnownComputer, k)
+				log.Printf("computer %v was removed from master, removing metric..", kname)
+				maintenanceState.DeleteLabelValues(k.GetLabelValues()...)
+				busyState.DeleteLabelValues(k.GetLabelValues()...)
+				delete(listOfKnownComputer, kname)
 			}
 
 			time.Sleep(time.Duration(viper.GetDuration("fetch-interval")))
@@ -127,9 +125,9 @@ func promWatchJenkinsNodes(registry prometheus.Registry) {
 func Entrypoint() {
 	r := prometheus.NewRegistry()
 	promWatchJenkinsNodes(*r)
-	handler := promhttp.HandlerFor(r,promhttp.HandlerOpts{})
+	handler := promhttp.HandlerFor(r, promhttp.HandlerOpts{})
 
 	http.Handle("/metrics", handler)
-	addr := fmt.Sprintf(":%d",viper.GetInt("port"))
+	addr := fmt.Sprintf(":%d", viper.GetInt("port"))
 	http.ListenAndServe(addr, nil)
 }
