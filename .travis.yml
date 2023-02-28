@@ -2,7 +2,7 @@ dist: bionic
 
 language: go
 go:
-  - 1.15.x
+  - 1.19.x
 env:
   global:
     - GO111MODULE=on
@@ -23,7 +23,7 @@ script:
 deploy:
   provider: releases
   api_key:
-    secure: "d2sH3eIGSf6em0L6lPZn7A606UdRnVSJT2lqELpHLAJPr84kYhOgBKlFb7GSfbmAnxOH0wlwpUH9kjnSompz1rrVZIv7EJUpfsy8wGaE5h9SyOVZFu0ylBSSaXk4RJ2fsN4QlwIOG6tuKP+OzHUD86SP1G03mBDqXYFY1duqlXWuWWeheNnOwztxV8WaPQYC5m+NhRFEFNm/C/9VaUaQlDfCxY/8eFEKkFFUAfMLl/+hvMuzYgIO5MD0hvFt8G5oOgkWbEBIiwoQ7uifnWiias2w2XcY6ODWHdbwBO8Mg8tlVDSYCrqxW9/D42tiudi9ODrbNqWTfKzTDEPW2ta4qM065GCzNoHOIJA9ktfpu+nVP4kTGqVs6PkbUbqk0TH280YzAQDJLlEZP6Drtg+Z831BGph4XKQoKMPLo9H9NQ0grZhD5dvAql+d3bVJ2NwomqhY8KT60H1TCKf8QcfZbj/Z3FKastlRVdn/K0FZ03MPv+HJsvGV1spA3v2mMpENDlGIZabOFpn497rDCBDb8dpbb6vaJASt/CQRMYUWuKMZtRf5Q8//zGRjzzXnnrbvomypXNgBpuB0lAulnJ6hiyBybPpjc6CLr9wPrRAfrpBaX6vPm7h38cFd+lMdNHnzmRKEzBpM2RWwo/S99/tuuP1C3NZJyxCJ3zJuD6GVoRQ="
+    secure: "g3gn/Rg9N1YR9a+uDCe/JEfun7tRDEPZBSQZxP1JsRN+7eUqgz+t1r/JaxE0JTK+kXSTvLuOsFZ0qll8pviE/VMFXobNeWUNRHh9Qa8jt7eyuiEVHTDZ0oOVrFrYd166aefBI6IJ1QMMKVMNKL+HTxkYdhXsZJrdtqwHDukOlzMXqe9ZO6FB+0P3aMazW+vcnAqUNjmZgk0E17IJl/TdUlIXiGh5kTIjUqpItRZL+xWIRf5oiZ+Ur7236nGVJd0XPllydPKKijAHiZcCXV8guzdxiSp47TwmBXSiRkMSck7oZvo1wplc2luzERSsRFxRiP+Tw/LXOgKm5PLw0zjJ+8It4bL8Ce4zKslU8CuujfYbl9XqD753wXC1rYrXNrFBsOr/KFCzwAGmLu2/Z7/bxZaBTbk6INQ84wzek0ajNnskgPJh1pJho0Iz0/+mMF2rAMdaaHKuOKbzVgDNfb0CvN5s38Uw+DBtqU+g7lkM7eR2fTJ1NjrMOnY5RrVoO7woQoB0csZyhBJ7yGMCQnB0ioXcNm1VFr/pBGcVGCUc8FMKDcTYCMTROUOSDizM+3hwpiSomFt1JQXB4/xsxWoLE3R6eyNUvtAJBO/btPR9FeJ4zB37uQMkWSoYbhi4KZzV6FeEjk/qRRG03uR6FyctEAnZLbWyecsWNtyDA5P712A="
   file_glob: true
   file: build/*
   skip_cleanup: true
